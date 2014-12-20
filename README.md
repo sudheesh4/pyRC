@@ -1,4 +1,4 @@
 ch-py-at
 ========
-
-A chat client based on python (in progress)
+Not IRC ! pyRC !
+An IRC application with GUI based on python!
