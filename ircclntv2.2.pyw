@@ -5,6 +5,7 @@ import time
 from tkinter import *
 from mssgboxes import *
 import sys
+import winsound
 def dosomething():
      print("YO")
 myname=""
@@ -24,8 +25,9 @@ root.update()
 root.deiconify()
 myadr=""
 log=''
-##root.minsize(width=666, height=666)
-##root.maxsize(width=666, height=666)
+
+##root.minsize(width=666, height=550)
+##root.maxsize(width=666, height=550)
 root.title('pyirc')
 def clntcnntd(want):
     global names
@@ -99,14 +101,8 @@ def recvfile():
         
         
         i=0
-        for c in ext:
-            if c=='.':
-                break
-            i=i+1
-        if i>len(ext)-1:
-             i=1
-        ext=ext[:i-1]+ext[i:]
- #       ext='recievde'
+
+        ext='(Recieved)'+ext
         file=open(ext,'wb')
         global log
         log=log+'\n Recieving file ;file-'+ext
@@ -128,11 +124,11 @@ def recvfilet():
     rvt.start()
 
     
-chat=Frame(root,width=600,height=340)
+chat=Frame(root,width=250,height=100)
 text=Frame(root)
 chat.pack()
 text.pack()
-cht=Text(chat,height=30,width=80,state=DISABLED)
+cht=Text(chat,height=15,width=30,state=DISABLED)
 cht.pack(fill=Y)
 scrollb=Scrollbar(chat)
 scrollb.pack(side=RIGHT,fill=Y)
@@ -169,7 +165,7 @@ cht["state"] = NORMAL
 cht.insert(END,data)
 cht["state"] = DISABLED
 cht.yview_pickplace("end")
-entry=Entry(text,width=100)
+entry=Entry(text,width=50)
 entry.pack(side=LEFT,fill=X)
 def reciv():
     global log
@@ -219,6 +215,7 @@ def reciv():
         cht["state"] = DISABLED
         log=log+'\n'+data
         cht.yview_pickplace("end")
+        winsound.Beep(310,800)
         
         if len(randvar)>=2:
             if randvar[1] == "Connected!":
