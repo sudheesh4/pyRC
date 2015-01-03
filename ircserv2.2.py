@@ -68,10 +68,11 @@ class nclient:
 
     def sendll(self,data):
         global users,log
+        log=log+'\n'+data
         for nad,cs in users.items():
             if nad==self.ad:
                 continue
-            log=log+'\n'+data
+            
             cs.send(data.encode())
         open('server_log.dat','w').write(log)
 def createconn(c,addr,nam):
