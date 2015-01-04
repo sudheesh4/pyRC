@@ -173,7 +173,7 @@ def reciv():
         global cht,name
         try:
             global c
-            data=c.recv(1024).decode()
+            data=c.recv(256).decode()
         except:
             
             data="\nServer Down!"
