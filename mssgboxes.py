@@ -8,11 +8,11 @@ class SOMEMSG:
         self.temp=temp
         self.e = Entry(top)
         self.e.pack(padx=5)
-
+        self.top.bind("<Return>",self.ok)
         b = Button(top, text="OK", command=self.ok)
         b.pack(pady=5)
 
-    def ok(self):
+    def ok(self,event):
         self.temp.append(self.e.get())
 
         self.top.destroy()
