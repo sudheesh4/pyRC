@@ -47,9 +47,12 @@ def sendfil():
     try:
         global myadr,log
         sadr=myadr
-        port=6100
+        port=13204
+        print('a')
         sendsock=socket.socket()
+        print('b')
         sendsock.bind((sadr,port))
+        print('c')
         temp=[]
         fi=SOMEMSG(root,"Enter Name file to send ",temp)
         root.wait_window(fi.top)
@@ -180,8 +183,53 @@ def reciv():
     while True:
         global cht,name
         try:
-            global c
-            data=c.recv(256).decode()
+             global c
+             data=c.recv(256).decode()
+                    #data="\n"+data
+             global names,nooflinks
+             if data[0:5]=='Link:':
+                  links[nooflinks]=data[5:]
+                  nooflinks=nooflinks+1
+                  cht["state"] = NORMAL
+                  cht.insert(END,"\n Link "+str(nooflinks)+" added!")
+                  cht["state"] = DISABLED
+                  log=log+'\n Link '+str(nooflinks)+" added!"
+                  cht.yview_pickplace("end")
+                  winsound.Beep(310,800)             
+                  continue
+             if data=='123abc':
+                 data=c.recv(512).decode()
+                 index=0
+                 for d in data:
+                 
+                     if d=='>':
+                         
+                         break
+                     index=index+1
+                 try:
+                     tempdata=data[index+1:]
+                     
+                     if tempdata[:13]=='changed name:':
+                         cad=clntcnntd(data[0:index])
+                         
+                         names[cad]=tempdata[13:]
+                         
+                 except:
+                     pint('fer')
+                     pass
+             randvar=data.split(':')
+             
+             cht["state"] = NORMAL
+             cht.insert(END,"\n"+data)
+             cht["state"] = DISABLED
+             log=log+'\n'+data
+             cht.yview_pickplace("end")
+             winsound.Beep(310,800)
+             
+             if len(randvar)>=2:
+                 if randvar[1] == "Connected!":
+                      data=c.recv(1024).decode()
+                      names=eval(data)
         except:
             
             data="\nServer Down!"
@@ -194,51 +242,7 @@ def reciv():
             os._exit(1)
         
        
-        #data="\n"+data
-        global names,nooflinks
-        if data[0:5]=='Link:':
-             links[nooflinks]=data[5:]
-             nooflinks=nooflinks+1
-             cht["state"] = NORMAL
-             cht.insert(END,"\n Link "+str(nooflinks)+" added!")
-             cht["state"] = DISABLED
-             log=log+'\n Link '+str(nooflinks)+" added!"
-             cht.yview_pickplace("end")
-             winsound.Beep(310,800)             
-             continue
-        if data=='123abc':
-            data=c.recv(512).decode()
-            index=0
-            for d in data:
-            
-                if d=='>':
-                    
-                    break
-                index=index+1
-            try:
-                tempdata=data[index+1:]
-                
-                if tempdata[:13]=='changed name:':
-                    cad=clntcnntd(data[0:index])
-                    
-                    names[cad]=tempdata[13:]
-                    
-            except:
-                pint('fer')
-                pass
-        randvar=data.split(':')
-        
-        cht["state"] = NORMAL
-        cht.insert(END,"\n"+data)
-        cht["state"] = DISABLED
-        log=log+'\n'+data
-        cht.yview_pickplace("end")
-        winsound.Beep(310,800)
-        
-        if len(randvar)>=2:
-            if randvar[1] == "Connected!":
-                 data=c.recv(1024).decode()
-                 names=eval(data)
+
             
         
         
@@ -344,7 +348,7 @@ menu.add_cascade(label="Actions",menu=submenu)
 menu.add_cascade(label="File Options",menu=submenu2)
 submenu.add_command(label="Change Name",command=changename)
 submenu.add_command(label="Save Log",command=savelog)
-submenu.add_command(label="Send Link",command=sendlink)
+submenu.add_command(label="Send Download Link",command=sendlink)
 submenu.add_command(label="Down. Link",command=showlink)
 submenu.add_command(label="Clear",command=clearchat)
 submenu.add_command(label="Whois",command=dosomething)
