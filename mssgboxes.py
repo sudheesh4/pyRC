@@ -9,7 +9,8 @@ class SOMEMSG:
         self.e = Entry(top)
         self.e.pack(padx=5)
         self.top.bind("<Return>",self.ok)
-        b = Button(top, text="OK", command=self.ok)
+        b = Button(top, text="OK")
+        b.bind("<Button-1>",self.ok)
         b.pack(pady=5)
 
     def ok(self,event):
